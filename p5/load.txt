@@ -1,0 +1,8 @@
+.separator |
+.import AuctionUser.dat AuctionUser 
+update AuctionUser set location = null where location = 'NULL';
+update AuctionUser set country = null where country = 'NULL';
+.import Auction.dat Auction
+.import Bid.dat Bid
+.import Classification.dat Classification
+.import Item.dat Item

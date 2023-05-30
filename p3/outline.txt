@@ -1,0 +1,5 @@
+The file main.cpp has been augmented with our new custom cases: test4() through 
+test11(). Note that given tests, test1() through test3() and errorTests() are
+still found in this file.
+  
+Our design and test reports can also be found in DesignReport.pdf.

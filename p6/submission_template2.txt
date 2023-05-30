@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<pset>
+
+    <!--
+        CS 564, Fall 2021
+        PROBLEM SET 2 SUBMISSION TEMPLATE
+
+        Please copy and paste your SQL queries (and potentially Python and Latex code) 
+	into the appropriate spots below. 
+
+        When submitting SQL queries, please do not include the intitial 
+        %sql or %%sql IPython commands. Just include the SQL code.
+
+        DO NOT DELETE THE <![CDATA[ ... ]]> LINES IN EACH <answer> TAG!
+        Doing so will break the autograder. To avoid accidentally breaking
+        something, please leave all existing comments in this template
+        intact in your submission.
+    -->
+
+    <student>
+        <name>
+            <!-- Insert your full name on the line below. -->
+            Austin Lee
+        </name>
+        <netid>
+            <!-- Insert your NetID (NOT your student ID number!) below. -->
+            alee88
+        </netid>
+        <studentid>
+            <!-- Insert your student ID number below. -->
+            9073532831
+        </studentid>
+    </student>
+
+
+    <!-- BEGIN PROBLEM 1 -->
+    <answer number="1a">
+        <!-- Paste your solution to problem 1, part (a) below this line. --><![CDATA[
+
+            %%sql
+                SELECT * FROM hospital hospital_1, hospital hospital_2 
+                WHERE hospital_1.provider = hospital_2.provider 
+                    AND (hospital_1.hospital <> hospital_2.hospital 
+                        OR hospital_1.address <> hospital_2.address 
+                        OR hospital_1.city <> hospital_2.city
+                        OR hospital_1.state <> hospital_2.state
+                        OR hospital_1.zip <> hospital_2.zip 
+                        OR hospital_1.county <> hospital_2.county 
+                        OR hospital_1.phone_number <> hospital_2.phone_number 
+                        OR hospital_1.hospital_type <> hospital_2.hospital_type 
+                        OR hospital_1.hospital_owner <> hospital_2.hospital_owner 
+                        OR hospital_1.emergency_service <> hospital_2.emergency_service
+                        OR hospital_1.condition <> hospital_2.condition 
+                        OR hospital_1.measure_code <> hospital_2.measure_code)
+                LIMIT 5;
+
+        ]]><!-- End problem 1, part (a). -->
+    </answer>
+    <answer number="1b">
+        <!-- Paste your solution to problem 1, part (b) below this line. --><![CDATA[
+
+            %%sql 
+            SELECT * FROM hospital hospital1, hospital hospital2
+            WHERE (hospital1.zip = hospital2.zip) AND (hospital1.city <> hospital2.city OR hospital1.state <> hospital2.state)
+            LIMIT 5;
+
+        ]]><!-- End problem 1, part (b). -->
+    </answer>
+    <!-- END PROBLEM 1 -->
+
+
+    <!-- BEGIN PROBLEM 2 -->
+    <answer number="2a">
+        <!-- Paste your solution to problem 2, part (a) below this line. --><![CDATA[
+
+            answer = True
+            explanation = "Given that the closure of A is {A, D, E, C, F}, and the closure of B is {B}. The closure of A, B is {A, B, C, D, E, F}, and this is a set of all attributes."
+
+        ]]><!-- End problem 2, part (a). -->
+    </answer>
+    <answer number="2b">
+        <!-- Paste your solution to problem 2, part (b) below this line. --><![CDATA[
+
+            answer = False
+            explanation = "With the given decomposition, ABC, CDE, and EFA. We can take CDE and EFA, the intersection of which is E and see that E is not a candidate key for any listed realtions."
+
+        ]]><!-- End problem 2, part (b). -->
+    </answer>    
+    <answer number="2c">
+        <!-- Paste your solution to problem 2, part (c) below this line. --><![CDATA[
+
+            answer = False
+            explanation = "The functional dependency {A} -> {D} does not fit into any provided decomposition."
+
+        ]]><!-- End problem 2, part (c). -->
+    </answer>
+    <answer number="2d">
+        <!-- Paste your solution to problem 2, part (d) below this line. --><![CDATA[
+
+            answer = True
+            explanation = "Because we have the functional dependency {A} -> {E} given in addition to {A} -> {D}, {D} -> {F}. We can then gather that {A} -> {F}, thus {A} -> {E, F} can be implied. "
+
+        ]]><!-- End problem 2, part (d). -->
+    </answer>
+    <answer number="2e">
+        <!-- Paste your solution to problem 2, part (e) below this line. --><![CDATA[
+
+            answer = False
+            explanation = "Bacause {A} -> {D} is a non-trivial FD of S. However, {A} is not a superkey, since the closure of {A}, which is {A,D,E,C,F} from the Closure Algorithm, does not contain B. Therefore, the definition of BCNF is violated."
+
+        ]]><!-- End problem 2, part (e). -->
+    </answer>
+    <!-- END PROBLEM 2 -->
+
+    <!-- BEGIN PROBLEM 3 -->
+    <answer number="3a">
+        <!-- Paste your solution to problem 3, part (a) below this line. --><![CDATA[
+
+            $$(\pi_{name}(\sigma_{year="2019"}(Author \bowtie Person) \cap \pi_{name}(\sigma_{affiliation = "UW-Madison"}(Person))$$
+
+        ]]><!-- End problem 3, part (a). -->
+    </answer>
+    <answer number="3b">
+        <!-- Paste your solution to problem 3, part (b) below this line. --><![CDATA[
+
+            $$(\pi_{name}(\pi_{artid}(\sigma_{name = "John Doe"}(Person)) \bowtie Author)) - (\pi_{name}(\sigma_{name = "John Doe"}(Person)))$$
+
+        ]]><!-- End problem 3, part (b). -->
+    </answer>
+    <answer number="3c">
+        <!-- Paste your solution to problem 3, part (c) below this line. --><![CDATA[
+
+
+
+        ]]><!-- End problem 3, part (c). -->
+    </answer>
+    <answer number="3d">
+    <!-- Paste your solution to problem 3, part (d) below this line. --><![CDATA[
+
+
+        ]]><!-- End problem 3, part (d). -->
+    </answer>
+    <!-- END PROBLEM 3 -->
+
+</pset>

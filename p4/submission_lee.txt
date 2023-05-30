@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+<pset>
+
+    <!--
+        CS 564, FALL 2021
+        PROBLEM SET 1 SUBMISSION TEMPLATE
+
+        Please copy and paste your SQL queries into the appropriate spots below. 
+
+        When submitting SQL queries, please do not include the initial 
+        %sql or %%sql IPython commands. Just include the SQL code.
+
+        DO NOT DELETE THE <![CDATA[ ... ]]> LINES IN EACH <answer> TAG!
+        Doing so will break the autograder. To avoid accidentally breaking
+        something, please leave all existing comments in this template
+        intact in your submission.
+    -->
+
+    <student>
+        <name>
+            <!-- Insert your full name on the line below. -->
+            Austin Lee
+        </name>
+        <netid>
+            <!-- Insert your NetID (NOT your student ID number!) below. -->
+            alee88
+        </netid>
+        <studentid>
+            <!-- Insert your student ID number below. -->
+            9073532831
+        </studentid>
+    </student>
+
+
+    <!-- BEGIN PROBLEM 1 -->
+    <answer number="1a">
+        <!-- Paste your solution to problem 1, part (a) below this line. --><![CDATA[
+        
+        SELECT A.i, A.j, (A.val + B.val) AS val FROM A, B WHERE A.i = B.i AND A.j = B.j;
+
+        ]]><!-- End problem 1, part (a). -->
+    </answer>
+    <answer number="1b">
+        <!-- Paste your solution to problem 1, part (b) below this line. --><![CDATA[
+        
+        SELECT SUM(A.val * B.val) AS DotProduct FROM A, B WHERE A.j = 2 AND B.j = 1 AND A.i = B.i;
+
+        ]]><!-- End problem 1, part (b). -->
+    </answer>
+    <answer number="1c">
+        <!-- Paste your solution to problem 1, part (c) below this line. --><![CDATA[
+
+       SELECT A.i, B.j, SUM(A.val * B.val) AS val FROM A,B WHERE A.j = B.i GROUP BY A.i, B.j;
+
+        ]]><!-- End problem 1, part (c). -->
+    </answer>
+    <answer number="1d">
+        <!-- Paste your solution to problem 1, part (d) below this line. --><![CDATA[
+
+       SELECT A.i, B.j, SUM(A.val * B.val) AS val FROM (SELECT A.i, B.j, SUM(A.val * B.val) AS val FROM A, A B WHERE A.j = B.i GROUP BY A.i, B.j) AS A, (SELECT A.i, B.j, SUM(A.val * B.val) AS val FROM A, A B WHERE A.j = B.i GROUP BY A.i, B.j) AS B WHERE A.j = B.i GROUP BY A.i, B.j;
+
+        ]]><!-- End problem 1, part (d). -->
+    </answer>
+    <!-- END PROBLEM 1 -->
+
+
+    <!-- BEGIN PROBLEM 2 -->
+    <answer number="2a">
+        <!-- Paste your solution to problem 2, part (a) below this line. --><![CDATA[
+
+        WITH HolidaySales(Store, HolidaySales) as
+            (SELECT Sales.Store, SUM(Sales.WeeklySales)
+            FROM Sales, Holidays
+            WHERE Sales.WeekDate = Holidays.WeekDate
+            AND Holidays.IsHoliday = 'TRUE'
+            GROUP BY Sales.Store),
+            
+            FindMax(FindMax) as
+            (SELECT MAX(HolidaySales.HolidaySales)
+            FROM HolidaySales)
+            SELECT HolidaySales.Store as Store, HolidaySales.HolidaySales as AllSales
+            FROM HolidaySales, FindMax
+            WHERE HolidaySales.HolidaySales IN FindMax;
+
+        ]]><!-- End problem 2, part (a). -->
+    </answer>
+    <answer number="2b">
+        <!-- Paste your solution to problem 2, part (b) below this line. --><![CDATA[
+
+        WITH HolidayWeeklySales(WeekDate, HolidayWeeklySales) as
+            (SELECT Sales.WeekDate, SUM(Sales.WeeklySales)
+            FROM Sales, Holidays
+            WHERE Sales.WeekDate = Holidays.WeekDate
+            AND Holidays.IsHoliday = 'TRUE'
+            GROUP BY Sales.WeekDate),
+            
+            HolidayWeeklyAverage(HolidayWeeklyAverage) as
+            (SELECT AVG(HolidayWeeklySales.HolidayWeeklySales)
+            FROM HolidayWeeklySales),
+
+            NonHolidaySale(WeekDate, NonHolidaySale) as
+            (SELECT Sales.WeekDate, SUM(Sales.WeeklySales)
+            FROM Sales, Holidays
+            WHERE Sales.WeekDate = Holidays.WeekDate
+            AND Holidays.IsHoliday = 'FALSE'
+            GROUP BY Sales.WeekDate)
+            SELECT COUNT(*) as NumNonHolidays
+            FROM NonHolidaySale, HolidayWeeklyAverage
+            WHERE NonHolidaySale.NonHolidaySale > HolidayWeeklyAverage.HolidayWeeklyAverage;
+
+        ]]><!-- End problem 2, part (b). -->
+    </answer>
+    <answer number="2c">
+        <!-- Paste your solution to problem 2, part (c) below this line. --><![CDATA[
+
+        SELECT Stores.Type as type,  SUM(Sales.WeeklySales) as TotalSales
+        FROM Stores, Sales
+        WHERE Sales.Store = Stores.Store AND SUBSTR(Sales.WeekDate,6,2) IN ("06", "07", "08")
+        GROUP BY type;
+
+        ]]><!-- End problem 2, part (c). -->
+    </answer>
+    <!-- END PROBLEM 2 -->
+
+
+    <!-- BEGIN PROBLEM 3 -->
+    <answer number="3a">
+        <!-- Paste your solution to problem 3, part (a) below this line. --><![CDATA[
+
+        SELECT streets1.B AS company, streets1.d AS distance
+        FROM streets streets1
+        WHERE streets1.A = "UW-Madison" AND streets1.d <= 9
+            UNION
+        SELECT streets2.B AS company, streets1.d + streets2.d
+        FROM streets streets1, streets streets2
+        WHERE streets1.A = "UW-Madison" AND streets1.d + streets2.d <= 9 
+            AND streets1.B = streets2.A AND streets2.B <> streets1.A;
+
+        ]]><!-- End problem 3, part (a). -->
+    </answer>
+    <answer number="3b">
+        <!-- Paste your solution to problem 3, part (b) below this line. --><![CDATA[
+
+        DROP VIEW IF EXISTS nocycle;
+        CREATE VIEW nocycle AS
+        SELECT streets_1.A, streets_1.B, streets_1.d AS dist
+        FROM streets streets_1
+            UNION
+        SELECT streets_1.A, streets_2.B, streets_1.d + streets_2.d AS dist
+        FROM streets streets_1, streets streets_2
+        WHERE streets_1.B = streets_2.A 
+            UNION
+        SELECT streets_1.A, streets_3.B, streets_1.d + streets_2.d + streets_3.d AS dist
+        FROM streets streets_1, streets streets_2, streets streets_3
+        WHERE streets_1.B = streets_2.A AND streets_2.B = streets_3.A AND streets_3.B <> streets_1.A;
+
+        SELECT nocycle1.B AS company_1, nocycle2.B AS company_2, MIN(nocycle1.dist + nocycle2.dist) AS distance
+        FROM nocycle nocycle1, nocycle nocycle2
+        WHERE nocycle1.B <> nocycle2.B AND nocycle1.A = "UW-Madison" AND nocycle2.A = "UW-Madison" AND company_1 > company_2
+        GROUP BY nocycle1.B, nocycle2.B
+        HAVING MIN(nocycle1.dist + nocycle2.dist) <= 15;
+
+        ]]><!-- End problem 3, part (b). -->
+    </answer>
+    <answer number="3c">
+        <!-- Paste your solution to problem 3, part (c) below this line. --><![CDATA[
+
+
+
+        ]]><!-- End problem 3, part (c). -->
+    </answer>
+    <!-- END PROBLEM 3 -->
+
+
+</pset>
